@@ -40,16 +40,18 @@ public class CompanyController {
         return ResponseEntity.notFound().build();
     }
 
-    @Operation(summary = "Create company by company JSON")
+    @Operation(summary = "Create company by companyInfo")
     @PostMapping("/company/create")
-    public ResponseEntity<CompanyInfo> createCompany(@Parameter(description = "Company object") @RequestBody Company company) {
+    public ResponseEntity<CompanyInfo> createCompany(@Parameter(description = "CompanyInfo") @RequestBody CompanyInfo companyInfo) {
+        Company company = new Company(companyInfo);
         Company createdCompany = companyService.createCompany(company);
         return ResponseEntity.status(HttpStatus.CREATED).body(CompanyInfo.getCompanyInfo(createdCompany));
     }
 
-    @Operation(summary = "Update company by company JSON")
+    @Operation(summary = "Update company by companyInfo")
     @PutMapping("/company/update")
-    public ResponseEntity<CompanyInfo> updateCompany(@Parameter(description = "Company object") @RequestBody Company company) {
+    public ResponseEntity<CompanyInfo> updateCompany(@Parameter(description = "CompanyInfo") @RequestBody CompanyInfo companyInfo) {
+        Company company = new Company(companyInfo);
         Company updatedCompany = companyService.updateCompany(company.getId(), company);
         if (updatedCompany != null) {
             return ResponseEntity.ok(CompanyInfo.getCompanyInfo(updatedCompany));
